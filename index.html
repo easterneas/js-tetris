@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+
+    <!-- Import JS file -->
+    <script src="app.js" charset="utf-8"></script>
+
+    <!-- Import CSS file -->
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-blue-900 text-white">
+    <div class="container mx-auto">
+        <h3 class="text-2xl text-center">Score: <span id="score">0</span></h3>
+        
+        <button id="start-pause" class="bg-gray-900 px-4 py-2 rounded hover:bg-gray-700">Start/Pause</button>
+
+        <div class="grid grid-cols-3">
+            <div id="tetri" class="col-span-2 flex flex-wrap mx-auto">
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+                <div class="border-2 border-white rounded"></div>
+<!-- Taken -->
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+                <div class="taken"></div>
+            </div>
+            <div id="next">
+                <h3 class="text-center">Next</h3>
+                <div id="nextGrid" class="flex flex-wrap mx-auto">
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                    <div class="border-2 border-white rounded"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

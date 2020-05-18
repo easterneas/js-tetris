@@ -1,0 +1,47 @@
+#tetri {
+    /* background-color: #ffcc00; */
+    width: 400px;
+    height: 800px;
+}
+
+#nextGrid {
+    width: 120px;
+    height: 120px;
+}
+
+#tetri div {
+    width: 40px;
+    height: 40px
+}
+#nextGrid div {
+    width: 30px;
+    height: 30px;
+}
+
+/* Tetriminos */
+
+.tetrimino {
+    background-color: #cf0cf0;
+}
+
+/* a */
+
+.tetrimino.l {
+    background-color: #ffcc00;
+}
+
+.tetrimino.z {
+    background-color: #fc0fc0;
+}
+
+.tetrimino.i {
+    background-color: #ccff00;
+}
+
+.tetrimino.o {
+    background-color: #cf0cf0;
+}
+
+.tetrimino.t {
+    background-color: #0fc0fc;
+}
