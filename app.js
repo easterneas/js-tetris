@@ -1,52 +1,86 @@
 // Executes when the content is completely loaded and parsed
 document.addEventListener('DOMContentLoaded', () => {
-    // declare constants
-    const grid = document.querySelector('#tetri')
-    const scoreTxt = document.querySelector('#score')
-    const toggleBtn = document.querySelector('#start-pause')
-    const width = 10
+    // declare variables and constants
+
+    // var   => A global-scoped variable.
+    //          example: var names = ['a','aa','aaa','asdfg']
+
+    // let   => A block-scoped variable.
+    //          It's like protected access modifier of a class property.
+    //          example: let names = ['a','aa','aaa','asdfg']
+
+    // const => Same as let, but as a constant, it cannot be changed.
+    //          example: const pi = 3.14
+
+    const grid        = document.querySelector('#tetri')
+    const nextGrid    = document.querySelector('#nextGrid')
+    const scoreTxt    = document.querySelector('#score')
+    const toggleBtn   = document.querySelector('#start-pause')
+    const width       = 10
+    const height      = 20
+    const nextWidth = 4
+
+    let nextIndex   = 0
     let nextRandom = 0
     let timerId = null
     let score = 0
-    
-    // declare variables
-    // let => block-scoped variable
-    // var => global-scoped variable
-    let squares = Array.from(document.querySelectorAll('#tetri div')) // Array.from() => forms an array from the function call output
+    let interval = 1000
+    // Array.from() => forms an array from the function call output
+    let squares, nextSquares
+    let currentPosition = 4
+    let currentRotation = 0
+    let paused = true
 
-    // ES6
+    // ES6 standards
     // Arrow Functions
-    // let names = ['a','aa','aaa','asdfg']
-
     // names.forEach(name => {
     //     console.log(name + ' BLAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
     // })
 
-    // declare Tetriminoes
-    const lTetrimino = [
+    // declare Tetrimino constants
+    // L-shaped Tetrimino
+    const jTetrimino = [
         [1, width+1, width*2+1, 2],
         [width, width+1, width+2, width*2+2],
         [1, width+1, width*2+1, width*2],
         [width, width*2, width*2+1, width*2+2],
     ]
-    const zTetrimino = [
+    // J-shaped Tetrimino
+    const lTetrimino = [
+        [0, 1, width+1, width*2+1],
+        [2, width, width+1, width+2],
+        [1, width+1, width*2+1, width*2+2],
+        [width, width+1, width+2, width*2]
+    ]
+    // Z-shaped Tetrimino
+    const sTetrimino = [
         [0,width,width+1,width*2+1],
         [width+1,width+2,width*2,width*2+1],
         [0,width,width+1,width*2+1],
         [width+1,width+2,width*2,width*2+1]
     ]
+    // S-shaped Tetrimino
+    const zTetrimino = [
+        [1, width, width+1, width*2],
+        [width, width+1, width*2+1, width*2+2],
+        [1, width, width+1, width*2],
+        [width, width+1, width*2+1, width*2+2],
+    ]
+    // T-shaped Tetrimino
     const tTetrimino = [
         [1,width,width+1,width+2],
         [1,width+1,width+2,width*2+1],
         [width,width+1,width+2,width*2+1],
         [1,width,width+1,width*2+1],
     ]
+    // O-shaped Tetrimino (or Square Tetrimino)
     const oTetrimino = [
         [0,1,width,width+1],
         [0,1,width,width+1],
         [0,1,width,width+1],
         [0,1,width,width+1]
     ]
+    // I-shaped Tetrimino
     const iTetrimino = [
         [1,width+1,width*2+1,width*3+1],
         [width,width+1,width+2,width+3],
@@ -55,76 +89,102 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
 
     const tetriminos = [
-        lTetrimino, zTetrimino, tTetrimino, oTetrimino, iTetrimino
+        jTetrimino, lTetrimino, zTetrimino, sTetrimino, tTetrimino, oTetrimino, iTetrimino
     ]
-
-    let currentPosition = 4
-    let currentRotation = 0
 
     // randomize position
     let random = Math.floor(Math.random()*tetriminos.length)
     let current = tetriminos[random][0]
 
+    // tetriminos without rotations
+    const nextTetriminos = [
+        [1, nextWidth+1, nextWidth*2+1, 2], // jTetrimino
+        [0, 1, nextWidth+1, nextWidth*2+1], // lTetrimino
+        [0,nextWidth,nextWidth+1,nextWidth*2+1], // zTetrimino
+        [nextWidth,nextWidth*2,1,nextWidth+1], // sTetrimino
+        [1,nextWidth,nextWidth+1,nextWidth+2], // tTetrimino
+        [0,1,nextWidth,nextWidth+1], // oTetrimino
+        [1,nextWidth+1,nextWidth*2+1,nextWidth*3+1], // iTetrimino
+    ]
+
+    // Functions
+
+    // initialization
+    function initializeGame() {
+        // initialize the grids
+        for(let i = 0; i < (width * height); i++) {
+            grid.innerHTML += '<div class="bg-blue-800 border border-blue-900 rounded"></div>'
+        }
+
+        for(let i = 0; i < 10; i++) {
+            grid.innerHTML += '<div class="taken"></div>'
+        }
+
+        // initialize the next grids
+        for(let i = 0; i < 16; i++) {
+            nextGrid.innerHTML += '<div class="bg-blue-800 border border-blue-900 rounded"></div>'
+        }
+
+        squares = Array.from(document.querySelectorAll('#tetri div'))
+        nextSquares = Array.from(document.querySelectorAll('#nextGrid div'))
+    }
+
     // draw the Tetrimino
     function draw() {
+        if(!paused)
         current.forEach(index => {
             squares[currentPosition + index].classList.add('tetrimino')
 
             switch(random) {
-                case 0: squares[currentPosition + index].classList.add('l'); break;
-                case 1: squares[currentPosition + index].classList.add('z'); break;
-                case 2: squares[currentPosition + index].classList.add('t'); break;
-                case 3: squares[currentPosition + index].classList.add('o'); break;
-                case 4: squares[currentPosition + index].classList.add('i'); break;
+                case 0: squares[currentPosition + index].classList.add('j'); break;
+                case 1: squares[currentPosition + index].classList.add('l'); break;
+                case 2: squares[currentPosition + index].classList.add('z'); break;
+                case 3: squares[currentPosition + index].classList.add('s'); break;
+                case 4: squares[currentPosition + index].classList.add('t'); break;
+                case 5: squares[currentPosition + index].classList.add('o'); break;
+                case 6: squares[currentPosition + index].classList.add('i'); break;
             }
         })
     }
 
     // undraw the Tetrimino
     function undraw() {
+        if(!paused)
         current.forEach(index => {
-            squares[currentPosition + index].classList.remove('tetrimino')
-            squares[currentPosition + index].classList.remove('l')
-            squares[currentPosition + index].classList.remove('z')
-            squares[currentPosition + index].classList.remove('t')
-            squares[currentPosition + index].classList.remove('o')
-            squares[currentPosition + index].classList.remove('i')
+            squares[currentPosition + index].classList.remove('tetrimino','j','l','z','s','t','o','i')
         })
     }
 
-    // draw()
-    
-    // setInterval(() => {
-    //     undraw()
-    //     draw()
-    // }, 1000);
-
     // move
 
-    // timerId = setInterval(moveDown, 1000)
-
-    function moveDown(){
-        undraw()
-        currentPosition += width
-        draw()
-        freeze()
+    function moveDown(keyPressed = false){
+        if(!current.some(index => squares[currentPosition + index + width].classList.contains('taken'))){
+            undraw()
+            currentPosition += width
+            draw()
+            freeze(keyPressed)
+        }
     }
 
     // freeze and create new Tetrimino
 
-    function freeze() {
+    function freeze(keyPressed = false) {
+        let timeout = keyPressed ? 0 : 500
+        
         if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
-            current.forEach(index => squares[currentPosition + index].classList.add('taken'))
-            // stops the flow, and generate new one
-            random = nextRandom
-            nextRandom = Math.floor(Math.random() * tetriminos.length)
-            current = tetriminos[random][currentRotation]
-            currentPosition = 4
+            setTimeout(() => {
+                current.forEach(index => squares[currentPosition + index].classList.add('taken'))
+                // stops the flow, and generate new one
+                random = nextRandom
+                nextRandom = Math.floor(Math.random() * tetriminos.length)
+                current = tetriminos[random][currentRotation]
+                currentPosition = 4
 
-            gameOver()
-            draw()
-            nextShape()
-            addScore()
+                gameOver()
+                addScore()
+                displayNextShape()
+                draw()
+            }, timeout);
         }
     }
 
@@ -133,29 +193,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // keycode events
     function control(e) {
-        // if((e.keyCode === 37)) moveLeft()
-
+        undraw()
+       
+        if(!paused)
         switch(e.keyCode) {
             case 37: moveLeft(); break;
             case 38: rotate(); break;
             case 39: moveRight(); break;
+            // Move Down
             case 40: moveDown(); break;
+            // Insta-move Down
+            case 32: 
+                e.preventDefault();
+                while(!current.some(index => squares[currentPosition + index + width].classList.contains('taken'))){
+                moveDown(true)
+                }
+                break;
         }
+
+        draw()
     }
-    document.addEventListener('keyup',control)
 
     // rotate
     function rotate() {
-        undraw()
         const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0)
         const isAtRightEdge = current.some(index => (currentPosition + index) % width === 9)
-
-        if(isAtLeftEdge){
-            currentPosition++
-        }
-        if(isAtRightEdge){
-            currentPosition--
-        }
 
         currentRotation++
 
@@ -163,12 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentRotation = 0
 
         current = tetriminos[random][currentRotation]
-
-        draw()
     }
+
     // moveleft, unless if it's on the left edge
     function moveLeft() {
-        undraw()
         const isAtleftEdge = current.some(index => (currentPosition + index) % width === 0)
 
         if(!isAtleftEdge)
@@ -177,12 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
             currentPosition++
         }
-
-        draw()
     }
+
     // moveright, unless if it's on the right edge
     function moveRight() {
-        undraw()
         const isAtRightEdge = current.some(index => (currentPosition + index) % width === width - 1);
 
         if(!isAtRightEdge)
@@ -191,66 +249,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
             currentPosition--
         }
-
-        draw()
     }
 
-    // next
-
-    const nextSquares = document.querySelectorAll('#nextGrid div')
-    const nextWidth = 4
-    let nextIndex = 0
-
-    // tetriminos without rotations
-    const nextTetriminos = [
-        [1, nextWidth+1, nextWidth*2+1, 2],
-        [0,nextWidth,nextWidth+1,nextWidth*2+1],
-        [1,nextWidth,nextWidth+1,nextWidth+2],
-        [0,1,nextWidth,nextWidth+1],
-        [1,nextWidth+1,nextWidth*2+1,nextWidth*3+1],
-    ]
-
-    // displays the shape
-
-    function nextShape() {
+    function displayNextShape() {
         // remove .tetrimino class from entire #nextGrid
         nextSquares.forEach(square => {
-            square.classList.remove('tetrimino')
-            square.classList.remove('l')
-            square.classList.remove('z')
-            square.classList.remove('t')
-            square.classList.remove('o')
-            square.classList.remove('i')
+            square.classList.remove('tetrimino','l','z','s','t','o','i')
         })
 
         // randomly select next tetrimino
         nextTetriminos[nextRandom].forEach( index => {
-            nextSquares[nextIndex + index].classList.add('tetrimino')
+            nextSquares[nextIndex + index]
+            .classList.add('tetrimino','next')
 
             switch(nextRandom) {
-                case 0: nextSquares[nextIndex + index].classList.add('l'); break;
-                case 1: nextSquares[nextIndex + index].classList.add('z'); break;
-                case 2: nextSquares[nextIndex + index].classList.add('t'); break;
-                case 3: nextSquares[nextIndex + index].classList.add('o'); break;
-                case 4: nextSquares[nextIndex + index].classList.add('i'); break;
+                case 0: nextSquares[nextIndex + index].classList.add('j'); break;
+                case 1: nextSquares[nextIndex + index].classList.add('l'); break;
+                case 2: nextSquares[nextIndex + index].classList.add('z'); break;
+                case 3: nextSquares[nextIndex + index].classList.add('s'); break;
+                case 4: nextSquares[nextIndex + index].classList.add('t'); break;
+                case 5: nextSquares[nextIndex + index].classList.add('o'); break;
+                case 6: nextSquares[nextIndex + index].classList.add('i'); break;
             }
         })
     }
-
-    // start/pause the game
-
-    let interval = 1000;
-    toggleBtn.addEventListener('click', () => {
-        if(timerId) {
-            clearInterval(timerId)
-            timerId = null
-        }else{
-            draw()
-            timerId = setInterval(moveDown, interval)
-            nextRandom = Math.floor(Math.random()*tetriminos.length)
-            nextShape()
-        }
-    })
 
     // add to score
     // .splice(startIndex,deleteIndex = 1, [values])
@@ -265,13 +287,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 score += 10
                 scoreTxt.innerHTML = score
                 row.forEach(index => {
-                    squares[index].classList.remove('taken')
-                    squares[index].classList.remove('tetrimino')
-                    squares[index].classList.remove('l')
-                    squares[index].classList.remove('z')
-                    squares[index].classList.remove('t')
-                    squares[index].classList.remove('o')
-                    squares[index].classList.remove('i')
+                    squares[index].classList.remove(
+                        'taken', 'tetrimino', 'j', 'l', 'z', 's', 't', 'o', 'i'
+                    )
                 })
                 const squaresRemoved = squares.splice(i, width)
                 
@@ -283,6 +301,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // toggle game state
+    function toggleGameState() {
+        if(timerId) {
+            clearInterval(timerId)
+            timerId = null
+            paused = true
+        }else{
+            paused = false
+            draw()
+            if(timerId){
+                nextRandom = Math.floor(Math.random()*tetriminos.length)
+                displayNextShape()
+            }
+            timerId = setInterval(moveDown, interval)
+        }
+    }
+
     // game over when it reaches top row
     function gameOver() {
         if(current.some( index => squares[currentPosition + index].classList.contains('taken'))) {
@@ -290,5 +325,18 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(timerId)
         }
     }
+
+    // start/pause the game
+
+    initializeGame();
+
+    toggleBtn.addEventListener('click', toggleGameState)
+    
+    document.addEventListener('keyup', (e) => {
+        if(e.keyCode == 27)
+            toggleGameState()
+        else
+            control(e)
+    })
     
 });
