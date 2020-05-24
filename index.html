@@ -15,18 +15,19 @@
 </head>
 <body class="bg-blue-900 text-white">
     <div class="container mx-auto">
-        <h3 class="text-2xl text-center">Score: <span id="score">0</span></h3>
+        <h2 class="text-4xl text-center mb-4">Classic Tetris JS</h2>
+        <h3 class="text-2xl text-center mb-4">Score: <span id="score">0</span></h3>
         
         <div class="grid grid-cols-3">
             <div id="tetri" class="col-span-2 flex flex-wrap mx-auto">
                 <!-- Game field -->
             </div>
-            <div id="next" class="grid grid-cols-1">
+            <div id="next">
+                <button id="start-pause" class="my-4 bg-gray-900 px-4 py-2 rounded hover:bg-gray-70 mx-auto block">Start/Pause</button>
                 <h3 class="text-center">Next</h3>
                 <div id="nextGrid" class="flex flex-wrap mx-auto row-span-4">
                     <!-- Next Tetrimino field -->
                 </div>
-                <button id="start-pause" class="bg-gray-900 px-4 py-2 rounded hover:bg-gray-70">Start/Pause</button>
             </div>
         </div>
     </div>
