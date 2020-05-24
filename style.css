@@ -13,6 +13,7 @@
     width: 40px;
     height: 40px
 }
+
 #nextGrid div {
     width: 30px;
     height: 30px;
@@ -21,12 +22,19 @@
 /* Tetriminos */
 
 .tetrimino {
-    background-color: #cf0cf0;
+    border: 2px white solid;
+    border-radius: 0.375em;
 }
 
-/* a */
+.tetrimino.next {
+    border-radius: 0.25em;
+}
 
 .tetrimino.l {
+    background-color: #ffcc00;
+}
+
+.tetrimino.j {
     background-color: #ffcc00;
 }
 
@@ -34,14 +42,18 @@
     background-color: #fc0fc0;
 }
 
-.tetrimino.i {
-    background-color: #ccff00;
+.tetrimino.s {
+    background-color: #00ffcc;
+}
+
+.tetrimino.t {
+    background-color: #0fc0fc;
 }
 
 .tetrimino.o {
     background-color: #cf0cf0;
 }
 
-.tetrimino.t {
-    background-color: #0fc0fc;
+.tetrimino.i {
+    background-color: #ccff00;
 }
